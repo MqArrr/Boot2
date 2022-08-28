@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.getName()}">Q</title>
+    <link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body style="font-family: 'Google Sans'; font-size:1.7em">
+<label style="font-size:3em; font-weight:bold;" th:text="${book.getName()}"></label>
+<hr>
+<br>
+<table>
+
+    <tr><td>Автор: </td><td><label th:text="${book.getAuthor()}"></label></td></tr>
+    <tr><td>Год издания: </td><td><label th:text="${book.getYear()}"></label></td></tr>
+    <tr><td>Уникальный номер: </td><td><label th:text="${book.getId()}"></label></td></tr>
+
+<div th:if="${person_owner != null}">
+    <tr><td>Находится у : </td><td><a th:href="@{/library/people/{id}(id=${person_owner.getId()})}" th:text="${person_owner.getName()}"></a></td></tr>
+    <tr><td>Взята:</td><td th:text="${book.getDateOfGet()}"></td></tr>
+</div>
+</table>
+<a th:href="@{/library/books/{id}/edit(id=${book.getId()})}">Редактировать</a><br><br>
+<form th:method="POST" th:action="@{/library/books/{id}/changeperson(id=${book.getId()})}" th:object="${person}">
+    <div th:if="${person_owner == null}">
+        Эта книга свободна
+    <select th:field="*{id}" th:object="${person}">
+        <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getName()}"></option>
+    </select>
+        <input type="submit" value="Назначить читателю">
+    </div>
+
+</form>
+<div th:if="${person_owner != null}">
+    <form th:method="POST" th:action="@{/library/books/{id}/deleteperson(id=${book.getId()})}" th:object="${person}">
+    <input type="submit" value="Освободить книгу">
+    </form>
+</div>
+
+
+<br>
+<form th:method="DELETE" th:action="@{/library/books/{id}(id=${book.getId()})}">
+    <input type="submit" value="Удалить книгу">
+</form>
+<hr><a href="/library">На главную</a>
+</body>
+</html>

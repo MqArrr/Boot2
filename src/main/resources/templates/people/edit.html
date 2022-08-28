@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редавктирование карточки читателя</title>
+    <link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body style="font-family: 'Google Sans'; font-size:1.7em">
+<label style="font-size:3em">Редактирование карточки читателя"<label th:text="${person.getName()}"></label>&quot;</label>
+<br><hr>
+
+<form th:method="patch" th:action="@{/library/people/{id}(id=${person.getId()})}" th:object="${person}">
+Имя:    <input type="text" th:field="*{name}"><br>
+Год рождения:    <input type="number" th:field="*{year}" ><br>
+    <input type="submit" value="Редактировать">
+</form>
+
+<hr>
+<a href="/library">На главную</a>
+</body>
+</html>

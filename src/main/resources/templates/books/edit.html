@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редавктирование книги</title>
+    <link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body style="font-family: 'Google Sans'; font-size:1.7em">
+<label style="font-size:3em;font-weight:bold;">Редактирование "<label th:text="${book.getName()}"></label>&quot;</label>
+<br><hr>
+
+<form th:method="patch" th:action="@{/library/books/{id}(id=${book.getId()})}" th:object="${book}">
+Название:    <input type="text" th:field="*{name}"><br>
+    <div style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{name}"></div>
+Автор:    <input type="text" th:field="*{author}" ><br>
+    <div style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{name}"></div>
+Год издания:    <input type="number" th:field="*{year}" ><br>
+    <input type="submit" value="Редактировать">
+</form>
+
+<hr>
+<a href="/library">На главную</a>
+</body>
+</html>

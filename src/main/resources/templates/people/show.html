@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title style="font-size:3em;font-weight:bold;" th:text="${person.getName()}">Q</title>
+    <link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body style="font-family: 'Google Sans';font-size:1.7em">
+<label style="font-size:3em" th:text="${person.getName()}"></label>
+<hr>
+<br>
+<table>
+    <tr><td>Возраст:</td> <td><label th:text="${person.getAge()}"></label></td></tr>
+    <tr><td>Уникальный номер:</td> <td><label th:text="${person.getId()}"></label></td></tr>
+</table><br>
+<a th:href="@{/library/people/edit/{id}(id=${person.getId()})}">Редактировать</a><br><br>
+<div th:if="${booksOfPerson.size() > 0}">
+    <br>
+    <label style="font-size: 2em">Взятые книги: </label><br>
+<label th:each="book : ${booksOfPerson}">
+    <a th:style="${book.isOverdue()} ? 'color:red':'color:blue'" th:href="@{/library/books/{id}(id=${book.getId()})}"
+       th:text="${book.getName()}">book</a><br>
+</label>
+
+
+</div>
+<div th:unless="${booksOfPerson.size() > 0}">
+    <label style="font-size: 1em">Читатель не должен ни одной книги</label>
+</div>
+
+
+<form th:method="DELETE" th:action="@{/library/people/{id}(id=${person.getId()})}">
+    <input type="submit" value="Удалить читателя">
+</form>
+
+<hr>
+<a href="/library">На главную</a>
+</body>
+</html>

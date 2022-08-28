@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:inline="javascript">
+
+
+
+
+    function search(){
+        let body = document.getElementById("bodyText").value;
+        let isSorted = document.getElementById("sorting");
+
+        document.location.href="/library/books/search?body=" + body+"&isSorted=" + isSorted.checked;
+    }
+    function back(){
+        let pageNom;
+        let pageCap;
+        let isSorted;
+        pageNom = [[${pageNum.get()}]];
+        pageCap = [[${pageNum.getPerPage()}]];
+        isSorted = [[${pageNum.getSort()}]];
+        pageNom--;
+        document.location.href="/library/books?page=" + pageNom + "&sort_by_year=" + isSorted + "&books_per_page=" + pageCap;
+    }
+    function forward(){
+        let pageNom;
+        let pageCap;
+        let isSorted;
+        pageNom = [[${pageNum.get()}]];
+        pageCap = [[${pageNum.getPerPage()}]];
+        isSorted = [[${pageNum.getSort()}]];
+        pageNom++;
+        document.location.href="/library/books?page=" + pageNom + "&sort_by_year=" + isSorted + "&books_per_page=" + pageCap;
+    }
+
+</script>
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Книги</title>
+    <link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body style="font-family: 'Google Sans'; font-size:1.7em">
+<label style="font-size:3em;font-weight:bold;">Книги</label>
+<br>
+
+    <label for="bodyText">Найти книгу:</label><input type="text"  id = "bodyText">
+    <label for="sorting">Сортировка по году:</label><input id="sorting" type="checkbox">
+    <input type="submit" value="Искать" onclick="search()">
+
+<hr>
+
+<div th:if="${is_pagination_on}" th:each="book : ${booksPage}">
+    <a th:style="${book.isFree()} ? 'color:green' : (${book.isOverdue()} ? 'color:red':'color:blue')" th:href="@{/library/books/{id}(id=${book.getId()})}"
+       th:text="${book.getName() +', '+ book.getYear()}">book</a><br>
+</div>
+<div th:each="book : ${books}">
+    <a th:style="${book.isFree()} ? 'color:green' : (${book.isOverdue()} ? 'color:red':'color:blue')" th:href="@{/library/books/{id}(id=${book.getId()})}"
+       th:text="${book.getName() +', '+ book.getYear()}">book</a><br>
+</div>
+<div th:if="${is_pagination_on}">
+    <br>
+<div th:if="${pageNum.isNextPageAvailable()}">
+
+<button th:onclick="forward()" >Следующая&#x3E;</button>
+    </div>
+<div th:if="${pageNum.get() > 0}">
+    <button th:onclick="back()">&#x3C;Предыдущая</button>
+</div>
+</div>
+<br>
+<a href="/library/books/new">Добавить книгу</a>
+<hr>
+<a href="/library">На главную</a>
+
+</body>
+</html>
